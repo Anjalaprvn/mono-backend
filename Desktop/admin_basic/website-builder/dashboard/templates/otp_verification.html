@@ -1,0 +1,341 @@
+<!-- templates/mainlogin/otp_verification.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification - Vastu Farms</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --primary-color: #234d36;
+      --secondary-color: #2f6f4e;
+      --background-color: #ffffff;
+      --content-background: #f4f6f8;
+      --text-color: #1f2937;
+      --border-color: #e5e7eb;
+      --card-radius: 14px;
+    }
+
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #eef3f1, #f9fafb);
+      padding: 24px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-card {
+      background: var(--background-color);
+      border-radius: var(--card-radius);
+      padding: 40px 36px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .login-logo {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-logo img {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .login-logo-name {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .login-logo-subtitle {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .login-title {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .login-subtitle {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 28px;
+    }
+
+    .otp-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--text-color);
+    }
+
+    .form-control {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      font-size: 1.2rem;
+      transition: border 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(35, 77, 54, 0.15);
+    }
+
+    .btn-verify {
+      margin-top: 18px;
+      height: 48px;
+      border-radius: 10px;
+      border: none;
+      background: var(--primary-color);
+      color: #ffffff;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-verify:hover {
+      background: var(--secondary-color);
+    }
+
+    .btn-verify:active {
+      transform: scale(0.98);
+    }
+
+    .back-to-login {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .back-link {
+      color: var(--secondary-color);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .message-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      max-width: 360px;
+    }
+
+    .message-alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.3s ease-out;
+      font-size: 0.875rem;
+    }
+    
+    .message-alert.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid #10b981;
+    }
+    
+    .message-alert.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid #ef4444;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .message-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+      transition: opacity 0.15s ease;
+    }
+    
+    .message-close:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Message Container -->
+  <div class="message-container" id="messageContainer"></div>
+  
+  <div class="login-page">
+    <div class="login-container">
+      <div class="login-card">
+        <!-- Logo -->
+        <div class="login-logo">
+          <img src="{% static 'img/vastu-logo.png' %}" alt="Vastu Farms Logo">
+          <div class="login-logo-text">
+            <span class="login-logo-name">Vastu Farms</span>
+            <span class="login-logo-subtitle">Admin Portal</span>
+          </div>
+        </div>
+        
+        <!-- Title -->
+        <h1 class="login-title">Enter OTP</h1>
+        <p class="login-subtitle">We've sent an OTP to your email</p>
+        
+        <!-- Form -->
+        <form class="otp-form" action="{% url 'account:verify_otp_main' %}" method="POST" id="otpForm">
+          {% csrf_token %}
+          <div class="form-group">
+            <label class="form-label">Enter 6-digit OTP</label>
+            <input type="text" class="form-control" name="otp" id="otpInput" placeholder="Enter 6-digit OTP" maxlength="11" required>
+          </div>
+          
+          <button type="submit" class="btn-verify">Verify OTP</button>
+          
+          <div class="back-to-login">
+            <a href="{% url 'account:mainlogin' %}" class="back-link">Back to Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Format OTP input to show spaces between digits
+    const otpInput = document.getElementById('otpInput');
+    if (otpInput) {
+      otpInput.addEventListener('input', function() {
+        let value = this.value.replace(/\D/g, '').substring(0, 6); // Only allow digits, max 6
+        // Format with spaces between digits for better readability
+        let formattedValue = '';
+        for (let i = 0; i < value.length; i++) {
+          formattedValue += value[i];
+          if (i < value.length - 1) {
+            formattedValue += ' ';
+          }
+        }
+        this.value = formattedValue;
+      });
+      
+      otpInput.addEventListener('keypress', function(e) {
+        if (e.key.length === 1 && !/\d/.test(e.key)) {
+          e.preventDefault(); // Only allow digits
+        }
+      });
+    }
+    
+    // Message display and auto-hide functionality
+    function showMessage(message, type = 'info') {
+      const messageContainer = document.getElementById('messageContainer');
+      if (!messageContainer) return;
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message-alert ${type}`;
+      
+      const iconMap = {
+        'success': 'bi-check-circle-fill',
+        'error': 'bi-x-circle-fill'
+      };
+      
+      messageDiv.innerHTML = `
+        <i class="bi ${iconMap[type] || 'bi-info-circle-fill'}"></i>
+        <span>${message}</span>
+        <button type="button" class="message-close" onclick="this.parentElement.remove()">
+          <i class="bi bi-x"></i>
+        </button>
+      `;
+      
+      messageContainer.appendChild(messageDiv);
+      
+      // Auto-remove after 3 seconds
+      setTimeout(function() {
+        messageDiv.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(function() {
+          if (messageDiv.parentNode) {
+            messageDiv.remove();
+          }
+        }, 3000);
+      }, 3000);
+    }
+    
+
+    
+    // Check for Django messages
+    {% if messages %}
+      window.addEventListener('DOMContentLoaded', function() {
+        {% for message in messages %}
+          showMessage('{{ message|escapejs }}', '{{ message.tags|default:"info" }}');
+        {% endfor %}
+      });
+    {% endif %}
+    
+    // Add slideOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

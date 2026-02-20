@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}Create New Post - Vastu Farms{% endblock %}
+
+{% block content %}
+<div class="form-card">
+  <div class="form-card-header">
+    <h2 class="form-card-title">Create New Post</h2>
+    <button type="button" class="btn-close" aria-label="Close"></button>
+  </div>
+
+  <form class="blog-form" id="blogForm">
+    <!-- Row 1: Title, Author, Status -->
+    <div class="form-row form-row-3">
+      <div class="form-group">
+        <label class="form-label">Title <span class="required">*</span></label>
+        <input type="text" class="form-control" name="title" placeholder="Why East-Facing Plots Command Premium ..." required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Author <span class="required">*</span></label>
+        <input type="text" class="form-control" name="author" placeholder="Why East-Facing Plots Command Premium ..." required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status <span class="required">*</span></label>
+        <select class="form-control form-select" name="status" required>
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+          <option value="scheduled">Scheduled</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Row 2: Reading Time, Category -->
+    <div class="form-row">
+      <div class="form-group form-group-sm">
+        <label class="form-label">Reading Time</label>
+        <input type="text" class="form-control" name="reading_time" placeholder="00:00 min">
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="form-label">Category</label>
+        <select class="form-control form-select" name="category">
+          <option value="">Select category</option>
+          <option value="vastu-tips">Vastu Tips</option>
+          <option value="astrology">Astrology</option>
+          <option value="investment">Investment</option>
+          <option value="farming">Farming</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Row 3: Description -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-control form-textarea" name="description" rows="5" placeholder="The universe is composed of five great elements: Prithvi (Earth), Jal (Water), Agni (Fire), Vayu (Air), and Aakash (Space). Vastu Shastra is the science of balancing these elements within a bounded space..."></textarea>
+      </div>
+    </div>
+
+    <!-- Row 4: Media Upload -->
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Media</label>
+        <div class="media-upload-container">
+          <div class="media-preview-single" id="mediaPreview">
+            <!-- Preview will be shown here -->
+          </div>
+          <label class="media-upload-box" id="uploadBox" for="mediaInput">
+            <div class="upload-icon">
+              <i class="bi bi-cloud-arrow-up"></i>
+            </div>
+            <div class="upload-text">
+              <span class="upload-title">Drop/Click to upload</span>
+              <span class="upload-hint">IMAGE* up to 10MB</span>
+            </div>
+            <input type="file" id="mediaInput" name="media" accept="image/*" hidden>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn btn-secondary">Cancel</button>
+      <button type="submit" class="btn-primary">Create Post</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  const mediaInput = document.getElementById('mediaInput');
+  const mediaPreview = document.getElementById('mediaPreview');
+  const uploadBox = document.getElementById('uploadBox');
+  let uploadedFile = null;
+
+  mediaInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setPreview(file);
+    }
+  });
+
+  function setPreview(file) {
+    uploadedFile = file;
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      mediaPreview.innerHTML = `
+        <div class="media-preview-item">
+          <img src="${e.target.result}" alt="${file.name}">
+          <button type="button" class="media-remove-btn" onclick="removeMedia()">
+            <i class="bi bi-trash3"></i>
+          </button>
+          <span class="media-filename">${file.name}</span>
+        </div>
+      `;
+      uploadBox.style.display = 'none';
+    };
+    
+    reader.readAsDataURL(file);
+  }
+
+  function removeMedia() {
+    mediaPreview.innerHTML = '';
+    uploadedFile = null;
+    mediaInput.value = '';
+    uploadBox.style.display = 'flex';
+  }
+
+  // Drag and drop support
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    uploadBox.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    uploadBox.addEventListener(eventName, () => uploadBox.classList.add('drag-over'), false);
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    uploadBox.addEventListener(eventName, () => uploadBox.classList.remove('drag-over'), false);
+  });
+
+  uploadBox.addEventListener('drop', function(e) {
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      setPreview(file);
+    }
+  });
+</script>
+{% endblock %}

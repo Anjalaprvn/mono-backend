@@ -1,0 +1,75 @@
+{% load static %}
+
+<article class="plot-card">
+  <!-- Image Section -->
+  <div class="plot-card-image">
+    {% if property.image %}
+    <img src="{{ property.image }}" alt="{{ property.name }}">
+    {% else %}
+    <img src="{% static 'img/placeholder.png' %}" alt="Property placeholder">
+    {% endif %}
+    
+    <!-- Overlay -->
+    <div class="plot-card-overlay">
+      <!-- Status Badge (top-left) -->
+      {% if property.status %}
+      <span class="plot-status-badge plot-status-{{ property.status|lower }}">{{ property.status }}</span>
+      {% endif %}
+      
+      <!-- Vastu Badge (top-right) -->
+      <span class="plot-vastu-badge">
+        <i class="bi bi-star-fill"></i>
+        {{ property.vastu_score }}% Vastu
+      </span>
+      
+      <!-- Price (bottom-left) -->
+      <span class="plot-price">₹{{ property.price }}</span>
+    </div>
+  </div>
+  
+  <!-- Content Section -->
+  <div class="plot-card-body">
+    <!-- Property Name -->
+    <h3 class="plot-card-title">{{ property.name }}</h3>
+    
+    <!-- Property Details -->
+    <div class="plot-card-details">
+      <span class="plot-detail-item">
+        <i class="bi bi-arrows-angle-expand"></i>
+        {{ property.area }} sq.ft
+      </span>
+      <span class="plot-detail-item">
+        <i class="bi bi-geo-alt"></i>
+        {{ property.facing }} Facing
+      </span>
+    </div>
+    
+    <!-- Footer -->
+    <div class="plot-card-footer">
+      <!-- Featured Toggle -->
+      <label class="plot-featured-toggle">
+        <span class="plot-featured-label">Featured</span>
+        <input type="checkbox" class="plot-toggle-input" {% if property.featured %}checked{% endif %}>
+        <span class="plot-toggle-slider"></span>
+      </label>
+      
+      <!-- Action Buttons -->
+      <div class="plot-card-actions">
+        <a href="{% url 'dashboard:plots_edit' property.id %}" class="plot-action-btn plot-action-edit" title="Edit">
+          <i class="bi bi-pencil"></i>
+        </a>
+        <button class="plot-action-btn plot-action-delete" 
+                title="Delete"
+                data-bs-toggle="modal" 
+                data-bs-target="#deletePlotModal"
+                data-plot-id="{{ property.id }}"
+                data-plot-name="{{ property.name }}">
+          <i class="bi bi-trash3"></i>
+        </button>
+        <a href="{% url 'dashboard:plots_view' property.id %}" class="plot-action-btn plot-action-external" title="View">
+          <i class="bi bi-box-arrow-up-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,45 @@
+{% load static %}
+
+<header class="header">
+  <!-- Left Section: Title and Subtitle -->
+  <div class="header-left">
+    <h1 class="page-title">{{ page_title|default:"Dashboard" }}</h1>
+    <p class="page-subtitle">{{ page_subtitle|default:"Welcome back to Vastu Farms Admin Portal" }}</p>
+  </div>
+
+  <!-- Right Section: Search, Notifications, User Profile -->
+  <div class="header-right">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="search" class="search-input" placeholder="Search plots, leads...">
+    </div>
+    
+    <button class="notification-btn">
+      <span class="notification-icon">🔔</span>
+      <span class="notification-badge"></span>
+    </button>
+    
+    <div class="user-profile">
+      <div class="user-info">
+        <span class="user-name">Admin User</span>
+        <span class="user-role">Super Admin</span>
+      </div>
+      <div class="dropdown">
+        <div class="user-avatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <span class="avatar-placeholder">AU</span>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-end profile-dropdown">
+         
+          <li>
+            <a class="dropdown-item profile-dropdown-item logout-item" href="{% url 'dashboard:logout' %}" id="logoutLink">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Logout</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+

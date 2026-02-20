@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment History - Vastu Farms{% endblock %}
+
+{% block content %}
+<!-- Page Header with Search and Filter -->
+<div class="payment-header">
+ 
+  <div class="payment-header-right w-100">
+    <div class="payment-search w-100">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" class="search-input w-100" placeholder="Search by payment ID, token, plot, or customer...">
+    </div>
+    <div class="payment-filter">
+      <i class="bi bi-funnel filter-icon"></i>
+      <select class="filter-select">
+        <option value="">All Status</option>
+        <option value="booked">Booked</option>
+        <option value="published">Published</option>
+        <option value="sold">Sold</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Total Payments Card -->
+<div class="total-payments-card">
+  <div class="total-payments-content">
+    <span class="total-payments-label">Total Payments (6 transactions)</span>
+    <span class="total-payments-amount">₹50,25,000</span>
+  </div>
+  <div class="total-payments-icon">
+    <i class="bi bi-currency-rupee"></i>
+  </div>
+</div>
+
+<!-- Status Summary Cards -->
+<div class="payment-summary-cards">
+  <div class="summary-card summary-booked">
+    <span class="summary-label">Booked Payments</span>
+    <span class="summary-amount">₹4,25,000</span>
+    <span class="summary-count">2 transactions</span>
+  </div>
+  <div class="summary-card summary-published">
+    <span class="summary-label">Published Payments</span>
+    <span class="summary-amount">₹1,00,000</span>
+    <span class="summary-count">1 transactions</span>
+  </div>
+  <div class="summary-card summary-sold">
+    <span class="summary-label">Sold Payments</span>
+    <span class="summary-amount">₹45,00,000</span>
+    <span class="summary-count">3 transactions</span>
+  </div>
+</div>
+
+<!-- Payment History Table -->
+<div class="dashboard-card p-0 mt-3">
+  <div class="table-responsive">
+    <table class="table table-payment">
+      <thead>
+        <tr>
+          <th>Payment / Token ID</th>
+          <th>Plot Details</th>
+          <th>Customer Details</th>
+          <th>Amount</th>
+          <th>Payment Date/Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Row 1 -->
+        <tr>
+          <td>
+            <div class="payment-id-cell">
+              <span class="payment-id">PAY001</span>
+              <span class="token-id">TKN001</span>
+            </div>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail">
+              <div class="plot-info">
+                <span class="plot-name">Premium Farm Plot A1</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> North Sector, Green Valley</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Rajesh Kumar</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 98765 43210</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> rajesh.kumar@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Mumbai, Maharashtra</span>
+            </div>
+          </td>
+          <td>
+            <div class="amount-cell">
+              <span class="amount">₹2,50,000</span>
+              <span class="payment-method">Bank Transfer</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-15 10:30 AM</span>
+            </div>
+          </td>
+          <td>
+            <span class="payment-badge badge-booked">Booked</span>
+          </td>
+        </tr>
+        <!-- Row 2 -->
+        <tr>
+          <td>
+            <div class="payment-id-cell">
+              <span class="payment-id">PAY002</span>
+              <span class="token-id">TKN002</span>
+            </div>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail">
+              <div class="plot-info">
+                <span class="plot-name">Vastu Aligned Plot B3</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> East Wing, Sunrise Estate</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Priya Sharma</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 87654 32109</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> priya.sharma@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Pune, Maharashtra</span>
+            </div>
+          </td>
+          <td>
+            <div class="amount-cell">
+              <span class="amount">₹15,00,000</span>
+              <span class="payment-method">UPI</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-14 02:15 PM</span>
+            </div>
+          </td>
+          <td>
+            <span class="payment-badge badge-sold">Sold</span>
+          </td>
+        </tr>
+        <!-- Row 3 -->
+        <tr>
+          <td>
+            <div class="payment-id-cell">
+              <span class="payment-id">PAY003</span>
+              <span class="token-id">TKN003</span>
+            </div>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1500076656116-558758c991c1?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail">
+              <div class="plot-info">
+                <span class="plot-name">Corner Plot C7</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> West Block, Heritage Gardens</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Amit Patel</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 76543 21098</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> amit.patel@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Ahmedabad, Gujarat</span>
+            </div>
+          </td>
+          <td>
+            <div class="amount-cell">
+              <span class="amount">₹1,00,000</span>
+              <span class="payment-method">Credit Card</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-13 04:45 PM</span>
+            </div>
+          </td>
+          <td>
+            <span class="payment-badge badge-published">Published</span>
+          </td>
+        </tr>
+        <!-- Row 4 -->
+        <tr>
+          <td>
+            <div class="payment-id-cell">
+              <span class="payment-id">PAY004</span>
+              <span class="token-id">TKN004</span>
+            </div>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail">
+              <div class="plot-info">
+                <span class="plot-name">Garden View Plot D2</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> South Garden, Palm Grove</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Sneha Reddy</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 65432 10987</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> sneha.reddy@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Hyderabad, Telangana</span>
+            </div>
+          </td>
+          <td>
+            <div class="amount-cell">
+              <span class="amount">₹1,75,000</span>
+              <span class="payment-method">Bank Transfer</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-12 11:00 AM</span>
+            </div>
+          </td>
+          <td>
+            <span class="payment-badge badge-booked">Booked</span>
+          </td>
+        </tr>
+        <!-- Row 5 -->
+        <tr>
+          <td>
+            <div class="payment-id-cell">
+              <span class="payment-id">PAY005</span>
+              <span class="token-id">TKN005</span>
+            </div>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail">
+              <div class="plot-info">
+                <span class="plot-name">Premium Villa Plot E5</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> Central Avenue, Lake View</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Vikram Singh</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 54321 09876</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> vikram.singh@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Jaipur, Rajasthan</span>
+            </div>
+          </td>
+          <td>
+            <div class="amount-cell">
+              <span class="amount">₹25,00,000</span>
+              <span class="payment-method">Cheque</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-11 03:30 PM</span>
+            </div>
+          </td>
+          <td>
+            <span class="payment-badge badge-sold">Sold</span>
+          </td>
+        </tr>
+        <!-- Row 6 -->
+        <tr>
+          <td>
+            <div class="payment-id-cell">
+              <span class="payment-id">PAY006</span>
+              <span class="token-id">TKN002</span>
+            </div>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail">
+              <div class="plot-info">
+                <span class="plot-name">Vastu Aligned Plot B3</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> East Wing, Sunrise Estate</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Priya Sharma</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 87654 32109</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> priya.sharma@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Pune, Maharashtra</span>
+            </div>
+          </td>
+          <td>
+            <div class="amount-cell">
+              <span class="amount">₹5,00,000</span>
+              <span class="payment-method">Bank Transfer</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-10 09:00 AM</span>
+            </div>
+          </td>
+          <td>
+            <span class="payment-badge badge-sold">Sold</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+{% endblock %}

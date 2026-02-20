@@ -1,0 +1,293 @@
+{% extends 'base.html' %}
+
+{% block title %}Token Management - Vastu Farms{% endblock %}
+
+{% block content %}
+<!-- Page Header with Search and Filter -->
+<div class="payment-header">
+  <div class="payment-header-right w-100">
+    <div class="payment-search w-100">
+      <i class="bi bi-search search-icon"></i>
+      <input type="text" class="search-input" placeholder="Search by token ID, plot, or customer...">
+    </div>
+    <div class="payment-filter">
+      <i class="bi bi-funnel filter-icon"></i>
+      <select class="filter-select">
+        <option value="">All Status</option>
+        <option value="booked">Booked</option>
+        <option value="published">Published</option>
+        <option value="sold">Sold</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Summary Cards -->
+<div class="token-summary-cards">
+  <div class="token-stat-card">
+    <span class="token-stat-label">Total Booked</span>
+    <span class="token-stat-value stat-booked">2</span>
+  </div>
+  <div class="token-stat-card">
+    <span class="token-stat-label">Published</span>
+    <span class="token-stat-value stat-published">1</span>
+  </div>
+  <div class="token-stat-card">
+    <span class="token-stat-label">Sold</span>
+    <span class="token-stat-value stat-sold">2</span>
+  </div>
+</div>
+
+<!-- Token Table -->
+<div class="dashboard-card p-0 mt-3">
+  <div class="table-responsive">
+    <table class="table table-token">
+      <thead>
+        <tr>
+          <th>Token ID</th>
+          <th>Plot Details</th>
+          <th>Customer Details</th>
+          <th>Payment Date/Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Row 1 -->
+        <tr>
+          <td>
+            <span class="token-id">TKN001</span>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail-round">
+              <div class="plot-info">
+                <span class="plot-name">Premium Farm Plot A1</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> North Sector, Green Valley</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Rajesh Kumar</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 98765 43210</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> rajesh.kumar@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Mumbai, Maharashtra</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-15 10:30 AM</span>
+            </div>
+          </td>
+          <td>
+            <div class="dropdown">
+              <button class="token-status-btn status-booked dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Booked
+              </button>
+              <ul class="dropdown-menu dropdown-menu-status">
+                <li><a class="dropdown-item active" href="#">Booked</a></li>
+                <li><a class="dropdown-item" href="#">Published</a></li>
+                <li><a class="dropdown-item" href="#">Sold</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <!-- Row 2 -->
+        <tr>
+          <td>
+            <span class="token-id">TKN002</span>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail-round">
+              <div class="plot-info">
+                <span class="plot-name">Vastu Aligned Plot B3</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> East Wing, Sunrise Estate</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Priya Sharma</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 87654 32109</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> priya.sharma@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Pune, Maharashtra</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-14 02:15 PM</span>
+            </div>
+          </td>
+          <td>
+            <div class="dropdown">
+              <button class="token-status-btn status-sold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sold
+              </button>
+              <ul class="dropdown-menu dropdown-menu-status">
+                <li><a class="dropdown-item" href="#">Booked</a></li>
+                <li><a class="dropdown-item" href="#">Published</a></li>
+                <li><a class="dropdown-item active" href="#">Sold</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <!-- Row 3 -->
+        <tr>
+          <td>
+            <span class="token-id">TKN003</span>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1500076656116-558758c991c1?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail-round">
+              <div class="plot-info">
+                <span class="plot-name">Corner Plot C7</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> West Block, Heritage Gardens</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Amit Patel</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 76543 21098</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> amit.patel@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Ahmedabad, Gujarat</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-13 04:45 PM</span>
+            </div>
+          </td>
+          <td>
+            <div class="dropdown">
+              <button class="token-status-btn status-published dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Published
+              </button>
+              <ul class="dropdown-menu dropdown-menu-status">
+                <li><a class="dropdown-item" href="#">Booked</a></li>
+                <li><a class="dropdown-item active" href="#">Published</a></li>
+                <li><a class="dropdown-item" href="#">Sold</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <!-- Row 4 -->
+        <tr>
+          <td>
+            <span class="token-id">TKN004</span>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail-round">
+              <div class="plot-info">
+                <span class="plot-name">Garden View Plot D2</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> South Garden, Palm Grove</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Sneha Reddy</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 65432 10987</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> sneha.reddy@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Hyderabad, Telangana</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-12 11:00 AM</span>
+            </div>
+          </td>
+          <td>
+            <div class="dropdown">
+              <button class="token-status-btn status-booked dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Booked
+              </button>
+              <ul class="dropdown-menu dropdown-menu-status">
+                <li><a class="dropdown-item active" href="#">Booked</a></li>
+                <li><a class="dropdown-item" href="#">Published</a></li>
+                <li><a class="dropdown-item" href="#">Sold</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <!-- Row 5 -->
+        <tr>
+          <td>
+            <span class="token-id">TKN005</span>
+          </td>
+          <td>
+            <div class="plot-details-cell">
+              <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=60&h=60&fit=crop" alt="Plot" class="plot-thumbnail-round">
+              <div class="plot-info">
+                <span class="plot-name">Premium Villa Plot E5</span>
+                <span class="plot-location"><i class="bi bi-geo-alt"></i> Central Avenue, Lake View</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="customer-details-cell">
+              <span class="customer-name">Vikram Singh</span>
+              <span class="customer-phone"><i class="bi bi-telephone"></i> +91 54321 09876</span>
+              <span class="customer-email"><i class="bi bi-envelope"></i> vikram.singh@email.com</span>
+              <span class="customer-location"><i class="bi bi-geo-alt"></i> Jaipur, Rajasthan</span>
+            </div>
+          </td>
+          <td>
+            <div class="date-time-cell">
+              <i class="bi bi-calendar3"></i>
+              <span>2024-01-11 03:30 PM</span>
+            </div>
+          </td>
+          <td>
+            <div class="dropdown">
+              <button class="token-status-btn status-sold dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Sold
+              </button>
+              <ul class="dropdown-menu dropdown-menu-status">
+                <li><a class="dropdown-item" href="#">Booked</a></li>
+                <li><a class="dropdown-item" href="#">Published</a></li>
+                <li><a class="dropdown-item active" href="#">Sold</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Token status change handler
+  document.querySelectorAll('.dropdown-menu-status .dropdown-item').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const newStatus = this.textContent.trim();
+      const dropdown = this.closest('.dropdown');
+      const button = dropdown.querySelector('.token-status-btn');
+      
+      // Update button text
+      button.childNodes[0].textContent = newStatus + ' ';
+      
+      // Update button class
+      button.classList.remove('status-booked', 'status-published', 'status-sold');
+      button.classList.add('status-' + newStatus.toLowerCase());
+      
+      // Update active state in dropdown
+      dropdown.querySelectorAll('.dropdown-item').forEach(function(di) {
+        di.classList.remove('active');
+      });
+      this.classList.add('active');
+    });
+  });
+</script>
+{% endblock %}

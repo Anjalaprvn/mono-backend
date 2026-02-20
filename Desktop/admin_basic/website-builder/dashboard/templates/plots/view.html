@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ plot.name }} - Vastu Farms{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<div class="plot-view-header">
+  <a href="{% url 'dashboard:plots_list' %}" class="btn-back">
+    <span>Back</span>
+  </a>
+  <div class="plot-view-toggle">
+    <span class="toggle-text">Mark As Sold</span>
+    <label class="plot-featured-toggle">
+      <input type="checkbox" class="plot-toggle-input" id="soldToggle" {% if plot.is_sold %}checked{% endif %}>
+      <span class="plot-toggle-slider"></span>
+    </label>
+  </div>
+</div>
+
+<!-- Hero Banner -->
+<div class="plot-hero-banner">
+  <img src="{{ plot.image|default:'/static/dashboard/img/vastu-logo.png' }}" alt="{{ plot.name }}">
+  <div class="plot-hero-overlay">
+    <div class="plot-hero-date">
+      <i class="bi bi-calendar3"></i>
+      <span>Created on {{ plot.created_date }}</span>
+    </div>
+    <div class="plot-hero-info">
+      <h1 class="plot-hero-title">{{ plot.name }}</h1>
+      <p class="plot-hero-location">{{ plot.location }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Stats Section -->
+<div class="plot-view-stats">
+  <div class="plot-stat-cards">
+    <div class="plot-stat-card">
+      <span class="plot-stat-value">₹{{ plot.price }}</span>
+      <span class="plot-stat-label">Price</span>
+    </div>
+    <div class="plot-stat-card">
+      <span class="plot-stat-value"><i class="bi bi-arrows-angle-expand"></i> {{ plot.size }}</span>
+      <span class="plot-stat-label">Sq.ft</span>
+    </div>
+    <div class="plot-stat-card">
+      <span class="plot-stat-value"><i class="bi bi-compass"></i> {{ plot.facing }}</span>
+      <span class="plot-stat-label">Facing</span>
+    </div>
+    <div class="plot-stat-card plot-stat-vastu">
+      <span class="plot-stat-value"><i class="bi bi-star-fill"></i> {{ plot.vastu_score }}%</span>
+      <span class="plot-stat-label">Vastu Score</span>
+    </div>
+  </div>
+  <div class="plot-stat-actions">
+    <a href="{% url 'dashboard:plots_edit' plot.id %}" class="plot-action-btn plot-action-edit" title="Edit">
+      <i class="bi bi-pencil"></i>
+    </a>
+    <button class="plot-action-btn plot-action-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#deletePlotModal">
+      <i class="bi bi-trash3"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Description Section -->
+<div class="plot-view-section">
+  <h3 class="plot-section-title">Description</h3>
+  <p class="plot-section-text">{{ plot.description }}</p>
+</div>
+
+<!-- Compatible Nakshatras Section -->
+<div class="plot-view-section">
+  <h3 class="plot-section-title">Compatible Nakshatras</h3>
+  {% if plot.nakshatras %}
+  <div class="plot-nakshatra-list">
+    {% for nakshatra in plot.nakshatras %}
+    <div class="plot-nakshatra-item">
+      <span class="plot-nakshatra-badge">{{ nakshatra.name }}</span>
+      <p class="plot-nakshatra-reason">{{ nakshatra.reason }}</p>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="plot-empty-text">No compatible nakshatras specified</p>
+  {% endif %}
+</div>
+
+<!-- Plot Highlights Section -->
+{% if plot.highlights %}
+<div class="plot-view-section">
+  <h3 class="plot-section-title">Plot Highlights</h3>
+  <ul class="plot-highlights-list">
+    {% for highlight in plot.highlights %}
+    <li class="plot-highlight-item">{{ highlight }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<!-- Nearby Places Section -->
+{% if plot.nearby_places %}
+<div class="plot-view-section">
+  <h3 class="plot-section-title">Nearby Places</h3>
+  <ul class="plot-nearby-list">
+    {% for place in plot.nearby_places %}
+    <li class="plot-nearby-item">{{ place.destination }} – {{ place.distance }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<!-- Media & Documents Section -->
+<div class="plot-view-section">
+  <h3 class="plot-section-title">Media & Documents</h3>
+  {% if plot.media %}
+  <div class="plot-media-grid">
+    {% for media in plot.media %}
+    <div class="plot-media-item" data-bs-toggle="modal" data-bs-target="#mediaModal" data-media-src="{{ media.url }}">
+      <img src="{{ media.url }}" alt="{{ media.name }}">
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="plot-empty-text">No media files uploaded</p>
+  {% endif %}
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deletePlotModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content delete-plot-modal">
+      <div class="modal-body">
+        <h4 class="delete-modal-title">Delete Plot</h4>
+        <p class="delete-modal-text">Are you sure you want to delete <strong>{{ plot.name }}</strong>? This action cannot be undone.</p>
+        <div class="delete-modal-actions">
+          <button type="button" class="btn-delete-cancel" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn-delete-confirm">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Media Modal -->
+<div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="" alt="Media Preview" id="mediaModalImage" style="max-width: 100%; max-height: 70vh; border-radius: 8px;">
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Media Modal
+  document.querySelectorAll('.plot-media-item').forEach(item => {
+    item.addEventListener('click', function() {
+      const src = this.dataset.mediaSrc;
+      document.getElementById('mediaModalImage').src = src;
+    });
+  });
+
+  // Sold Toggle
+  document.getElementById('soldToggle').addEventListener('change', function() {
+    console.log('Mark as sold:', this.checked);
+    // Handle sold status update
+  });
+</script>
+{% endblock %}

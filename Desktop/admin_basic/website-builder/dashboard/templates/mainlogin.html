@@ -1,0 +1,453 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Vastu Farms</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+:root {
+  --primary-color: #234d36;
+  --secondary-color: #2f6f4e;
+  --background-color: #ffffff;
+  --content-background: #f4f6f8;
+  --text-color: #1f2937;
+  --border-color: #e5e7eb;
+  --card-radius: 14px;
+}
+
+/* Page */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #eef3f1, #f9fafb);
+  padding: 24px;
+}
+
+/* Card */
+.login-container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-card {
+  background: var(--background-color);
+  border-radius: var(--card-radius);
+  padding: 40px 36px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Logo */
+.login-logo {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.login-logo img {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.login-logo-name {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.login-logo-subtitle {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Title */
+.login-title {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.login-subtitle {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 28px;
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text-color);
+}
+
+/* Inputs */
+.form-control {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(35, 77, 54, 0.15);
+}
+
+/* Password */
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-input-wrapper .form-control {
+  padding-right: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #6b7280;
+}
+
+.password-toggle:hover {
+  color: var(--primary-color);
+}
+
+/* Options */
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.remember-me input {
+  accent-color: var(--primary-color);
+}
+
+.forgot-password {
+  text-decoration: none;
+  color: var(--secondary-color);
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Button */
+.btn-login {
+  margin-top: 6px;
+  height: 48px;
+  border-radius: 10px;
+  border: none;
+  background: var(--primary-color);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-login:hover {
+  background: var(--secondary-color);
+}
+
+.btn-login:active {
+  transform: scale(0.98);
+}
+
+/* Messages */
+.message-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  max-width: 360px;
+}
+
+    .message-alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.3s ease-out;
+      font-size: 0.875rem;
+    }
+    
+    .message-alert.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid #10b981;
+    }
+    
+    .message-alert.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid #ef4444;
+    }
+    
+    .message-alert.warning {
+      background-color: #fef3c7;
+      color: #92400e;
+      border-left: 4px solid #f59e0b;
+    }
+    
+    .message-alert.info {
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-left: 4px solid #3b82f6;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .message-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+      transition: opacity 0.15s ease;
+    }
+    
+    .message-close:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Message Container -->
+  <div class="message-container" id="messageContainer"></div>
+  
+  <div class="login-page">
+    <div class="login-container">
+      <div class="login-card">
+        <!-- Logo -->
+        <div class="login-logo">
+          <img src="{% static 'img/vastu-logo.png' %}" alt="Vastu Farms Logo">
+          <div class="login-logo-text">
+            <span class="login-logo-name">Vastu Farms</span>
+            <span class="login-logo-subtitle">Admin Portal</span>
+          </div>
+        </div>
+        
+        <!-- Title -->
+        <h1 class="login-title">Welcome Back</h1>
+        <p class="login-subtitle">Sign in to continue to your dashboard</p>
+        
+        <!-- Form -->
+       <!-- Updated form action to use the new mainlogin handler -->
+<form class="login-form" action="{% url 'account:mainlogin_handler' %}" method="POST" id="loginForm">
+  {% csrf_token %}
+  <div class="form-group">
+    <label class="form-label">Username</label>
+    <input type="text" class="form-control" name="username" id="usernameInput" placeholder="Enter your username" required>
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">Password</label>
+    <div class="password-input-wrapper">
+      <input type="password" class="form-control" name="password" id="passwordInput" placeholder="Enter your password" required>
+      <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+        <i class="bi bi-eye" id="passwordToggleIcon"></i>
+      </button>
+    </div>
+  </div>
+  
+  <div class="login-options">
+    <label class="remember-me">
+      <input type="checkbox" name="remember" id="rememberCheckbox">
+      <span>Remember me</span>
+    </label>
+    <a href="#" class="forgot-password">Forgot Password?</a>
+  </div>
+  
+  <button type="submit" class="btn-login">Sign In</button>
+</form>
+<div class="login-link" style="text-align: center; margin-top: 18px; font-size: 0.85rem; color: #6b7280;">
+  Don't have an account? <a href="{% url 'account:register' %}" style="color: var(--secondary-color); text-decoration: none;">Register</a>
+</div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Password toggle functionality
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordToggleIcon = document.getElementById('passwordToggleIcon');
+    
+    if (passwordToggle && passwordInput) {
+      passwordToggle.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        passwordToggleIcon.classList.toggle('bi-eye');
+        passwordToggleIcon.classList.toggle('bi-eye-slash');
+      });
+    }
+    
+    // Remember me functionality
+    const rememberCheckbox = document.getElementById('rememberCheckbox');
+    const usernameInput = document.getElementById('usernameInput');
+    
+    // Load saved username if remember me was checked
+    window.addEventListener('DOMContentLoaded', function() {
+      const rememberedUsername = localStorage.getItem('vastufarms_remembered_username');
+      const rememberMe = localStorage.getItem('vastufarms_remember_me');
+      
+      if (rememberedUsername && rememberMe === 'true') {
+        usernameInput.value = rememberedUsername;
+        rememberCheckbox.checked = true;
+      }
+    });
+    
+    // Save username on form submit if remember me is checked
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', function() {
+        if (rememberCheckbox.checked) {
+          localStorage.setItem('vastufarms_remembered_username', usernameInput.value);
+          localStorage.setItem('vastufarms_remember_me', 'true');
+        } else {
+          localStorage.removeItem('vastufarms_remembered_username');
+          localStorage.removeItem('vastufarms_remember_me');
+        }
+      });
+    }
+    
+    // Message display and auto-hide functionality
+    function showMessage(message, type = 'info') {
+      const messageContainer = document.getElementById('messageContainer');
+      if (!messageContainer) return;
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message-alert ${type}`;
+      
+      const iconMap = {
+        'success': 'bi-check-circle-fill',
+        'error': 'bi-x-circle-fill',
+        'warning': 'bi-exclamation-triangle-fill',
+        'info': 'bi-info-circle-fill'
+      };
+      
+      messageDiv.innerHTML = `
+        <i class="bi ${iconMap[type] || iconMap.info}"></i>
+        <span>${message}</span>
+        <button type="button" class="message-close" onclick="this.parentElement.remove()">
+          <i class="bi bi-x"></i>
+        </button>
+      `;
+      
+      messageContainer.appendChild(messageDiv);
+      
+      // Auto-remove after 3 seconds
+      setTimeout(function() {
+        messageDiv.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(function() {
+          if (messageDiv.parentNode) {
+            messageDiv.remove();
+          }
+        }, 300);
+      }, 3000);
+    }
+    
+    // Check for URL parameters or Django messages
+    window.addEventListener('DOMContentLoaded', function() {
+      // Check URL parameters for messages
+      const urlParams = new URLSearchParams(window.location.search);
+      const message = urlParams.get('message');
+      const messageType = urlParams.get('type') || 'info';
+      
+      if (message) {
+        showMessage(decodeURIComponent(message), messageType);
+        // Clean URL after displaying message
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
+      
+      // Handle Django messages from context
+      {% if messages %}
+        {% for message in messages %}
+          showMessage('{{ message|escapejs }}', '{{ message.tags|default:"info" }}');
+        {% endfor %}
+      {% endif %}
+      
+      // Clear any messages from session storage (for logout scenario)
+      const logoutMessage = sessionStorage.getItem('logout_message');
+      if (logoutMessage) {
+        showMessage(logoutMessage, 'info');
+        sessionStorage.removeItem('logout_message');
+      }
+    });
+    
+    // Add slideOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Vastu Farms</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--content-background);
+      padding: 20px;
+    }
+    
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+    }
+    
+    .login-card {
+      background-color: var(--background-color);
+      border-radius: var(--card-radius);
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .login-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    
+    .login-logo img {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .login-logo-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .login-logo-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    .login-logo-subtitle {
+      font-size: 0.875rem;
+      color: rgba(31, 41, 55, 0.6);
+    }
+    
+    .login-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-color);
+      text-align: center;
+      margin: 0 0 8px;
+    }
+    
+    .login-subtitle {
+      font-size: 0.875rem;
+      color: rgba(31, 41, 55, 0.6);
+      text-align: center;
+      margin: 0 0 32px;
+    }
+    
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .login-form .form-group {
+      gap: 8px;
+    }
+    
+    .login-form .form-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    
+    .login-form .form-control {
+      padding: 14px 16px;
+    }
+    
+    .login-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    
+    .remember-me input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary-color);
+    }
+    
+    .remember-me span {
+      font-size: 0.875rem;
+      color: rgba(31, 41, 55, 0.7);
+    }
+    
+    .forgot-password {
+      font-size: 0.875rem;
+      color: var(--secondary-color);
+      text-decoration: none;
+    }
+    
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+    
+    .btn-login {
+      width: 100%;
+      padding: 14px 24px;
+      background-color: var(--primary-color);
+      color: var(--background-color);
+      border: none;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      margin-top: 8px;
+    }
+    
+    .btn-login:hover {
+      background-color: #1e4230;
+    }
+    
+    .password-input-wrapper {
+      position: relative;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(31, 41, 55, 0.6);
+      cursor: pointer;
+      font-size: 1.125rem;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      transition: color 0.15s ease;
+    }
+    
+    .password-toggle:hover {
+      color: var(--primary-color);
+    }
+    
+    .password-toggle:focus {
+      outline: none;
+    }
+    
+    .login-form .password-input-wrapper .form-control {
+      padding-right: 48px;
+    }
+    
+    .message-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      max-width: 400px;
+    }
+    
+    .message-alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.3s ease-out;
+      font-size: 0.875rem;
+    }
+    
+    .message-alert.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid #10b981;
+    }
+    
+    .message-alert.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid #ef4444;
+    }
+    
+    .message-alert.warning {
+      background-color: #fef3c7;
+      color: #92400e;
+      border-left: 4px solid #f59e0b;
+    }
+    
+    .message-alert.info {
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-left: 4px solid #3b82f6;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .message-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+      transition: opacity 0.15s ease;
+    }
+    
+    .message-close:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Message Container -->
+  <div class="message-container" id="messageContainer"></div>
+  
+  <div class="login-page">
+    <div class="login-container">
+      <div class="login-card">
+        <!-- Logo -->
+        <div class="login-logo">
+          <img src="{% static 'img/vastu-logo.png' %}" alt="Vastu Farms Logo">
+          <div class="login-logo-text">
+            <span class="login-logo-name">Vastu Farms</span>
+            <span class="login-logo-subtitle">Admin Portal</span>
+          </div>
+        </div>
+        
+        <!-- Title -->
+        <h1 class="login-title">Welcome Back</h1>
+        <p class="login-subtitle">Sign in to continue to your dashboard</p>
+        
+        <!-- Form -->
+        <form class="login-form" action="" method="POST" id="loginForm">
+          {% csrf_token %}
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" name="email" id="emailInput" placeholder="Enter your email" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <div class="password-input-wrapper">
+              <input type="password" class="form-control" name="password" id="passwordInput" placeholder="Enter your password" required>
+              <button type="button" class="password-toggle" id="passwordToggle" aria-label="Toggle password visibility">
+                <i class="bi bi-eye" id="passwordToggleIcon"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="login-options">
+            <label class="remember-me">
+              <input type="checkbox" name="remember" id="rememberCheckbox">
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="forgot-password">Forgot Password?</a>
+          </div>
+          
+          <button type="submit" class="btn-login">Sign In</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Password toggle functionality
+    const passwordToggle = document.getElementById('passwordToggle');
+    const passwordInput = document.getElementById('passwordInput');
+    const passwordToggleIcon = document.getElementById('passwordToggleIcon');
+    
+    if (passwordToggle && passwordInput) {
+      passwordToggle.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        passwordToggleIcon.classList.toggle('bi-eye');
+        passwordToggleIcon.classList.toggle('bi-eye-slash');
+      });
+    }
+    
+    // Remember me functionality
+    const rememberCheckbox = document.getElementById('rememberCheckbox');
+    const emailInput = document.getElementById('emailInput');
+    
+    // Load saved email if remember me was checked
+    window.addEventListener('DOMContentLoaded', function() {
+      const rememberedEmail = localStorage.getItem('vastufarms_remembered_email');
+      const rememberMe = localStorage.getItem('vastufarms_remember_me');
+      
+      if (rememberedEmail && rememberMe === 'true') {
+        emailInput.value = rememberedEmail;
+        rememberCheckbox.checked = true;
+      }
+    });
+    
+    // Save email on form submit if remember me is checked
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', function() {
+        if (rememberCheckbox.checked) {
+          localStorage.setItem('vastufarms_remembered_email', emailInput.value);
+          localStorage.setItem('vastufarms_remember_me', 'true');
+        } else {
+          localStorage.removeItem('vastufarms_remembered_email');
+          localStorage.removeItem('vastufarms_remember_me');
+        }
+      });
+    }
+    
+    // Message display and auto-hide functionality
+    function showMessage(message, type = 'info') {
+      const messageContainer = document.getElementById('messageContainer');
+      if (!messageContainer) return;
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message-alert ${type}`;
+      
+      const iconMap = {
+        'success': 'bi-check-circle-fill',
+        'error': 'bi-x-circle-fill',
+        'warning': 'bi-exclamation-triangle-fill',
+        'info': 'bi-info-circle-fill'
+      };
+      
+      messageDiv.innerHTML = `
+        <i class="bi ${iconMap[type] || iconMap.info}"></i>
+        <span>${message}</span>
+        <button type="button" class="message-close" onclick="this.parentElement.remove()">
+          <i class="bi bi-x"></i>
+        </button>
+      `;
+      
+      messageContainer.appendChild(messageDiv);
+      
+      // Auto-remove after 3 seconds
+      setTimeout(function() {
+        messageDiv.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(function() {
+          if (messageDiv.parentNode) {
+            messageDiv.remove();
+          }
+        }, 300);
+      }, 3000);
+    }
+    
+    // Check for URL parameters or Django messages
+    window.addEventListener('DOMContentLoaded', function() {
+      // Check URL parameters for messages
+      const urlParams = new URLSearchParams(window.location.search);
+      const message = urlParams.get('message');
+      const messageType = urlParams.get('type') || 'info';
+      
+      if (message) {
+        showMessage(decodeURIComponent(message), messageType);
+        // Clean URL after displaying message
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
+      
+      // Handle Django messages from context
+      {% if messages %}
+        {% for message in messages %}
+          showMessage('{{ message|escapejs }}', '{{ message.tags|default:"info" }}');
+        {% endfor %}
+      {% endif %}
+      
+      // Clear any messages from session storage (for logout scenario)
+      const logoutMessage = sessionStorage.getItem('logout_message');
+      if (logoutMessage) {
+        showMessage(logoutMessage, 'info');
+        sessionStorage.removeItem('logout_message');
+      }
+    });
+    
+    // Add slideOut animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Vastu Farms{% endblock %}
+
+{% block content %}
+<!-- Stats Cards Row -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-card-header">
+      <div class="stat-icon stat-icon-plots">
+        <i class="bi bi-geo-alt"></i>
+      </div>
+      <span class="stat-change positive">+3 <i class="bi bi-arrow-up-right"></i></span>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">24</div>
+      <div class="stat-label">Total Plots</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-header">
+      <div class="stat-icon stat-icon-plots">
+        <i class="bi bi-people"></i>
+      </div>
+      <span class="stat-change positive">+12% <i class="bi bi-arrow-up-right"></i></span>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">156</div>
+      <div class="stat-label">Active Leads</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-header">
+      <div class="stat-icon stat-icon-revenue">
+        <i class="bi bi-graph-up-arrow"></i>
+      </div>
+      <span class="stat-change positive">+18% <i class="bi bi-arrow-up-right"></i></span>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">₹2.4Cr</div>
+      <div class="stat-label">This Month Revenue</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-header">
+      <div class="stat-icon stat-icon-vastu">
+        <i class="bi bi-star"></i>
+      </div>
+      <span class="stat-change negative">-2% <i class="bi bi-arrow-down-right"></i></span>
+    </div>
+    <div class="stat-content">
+      <div class="stat-value">86%</div>
+      <div class="stat-label">Avg. Vastu Score</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="dashboard-grid">
+  <!-- Recent Activity Section -->
+  <div class="dashboard-card activity-card">
+    <h3 class="card-title border-bottom pb-2">Recent Activity</h3>
+    <div class="activity-list">
+      <div class="activity-item">
+        <span class="activity-dot blue"></span>
+        <div class="activity-content">
+          <div class="activity-text">
+            <span class="activity-title">New lead from Plot Finder Tool</span>
+            <a href="#" class="activity-link">Rajesh Kumar</a>
+          </div>
+          <span class="activity-time">2 mins ago</span>
+        </div>
+      </div>
+
+      <div class="activity-item">
+        <span class="activity-dot orange"></span>
+        <div class="activity-content">
+          <div class="activity-text">
+            <span class="activity-title">Plot Sunrise Meadows - A1 marked as Reserved</span>
+          </div>
+          <span class="activity-time">1 hour ago</span>
+        </div>
+      </div>
+
+      <div class="activity-item">
+        <span class="activity-dot green"></span>
+        <div class="activity-content">
+          <div class="activity-text">
+            <span class="activity-title">Site visit scheduled with Priya Sharma</span>
+          </div>
+          <span class="activity-time">3 hours ago</span>
+        </div>
+      </div>
+
+      <div class="activity-item">
+        <span class="activity-dot blue"></span>
+        <div class="activity-content">
+          <div class="activity-text">
+            <span class="activity-title">Lead status updated to Site Visit</span>
+            <a href="#" class="activity-link">Amit Patel</a>
+          </div>
+          <span class="activity-time">5 hours ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions Section -->
+  <div class="dashboard-card actions-card">
+    <h3 class="card-title border-bottom pb-2">Quick Actions</h3>
+    <div class="quick-actions mt-3">
+      <a href="{% url 'dashboard:plots_add' %}" class="quick-action-btn action-plot">
+        <span class="action-icon">
+          <i class="bi bi-geo-alt"></i>
+        </span>
+        <span>Add New Plot</span>
+      </a>
+
+      <a href="{% url 'dashboard:lead_management' %}" class="quick-action-btn action-leads">
+        <span class="action-icon">
+          <i class="bi bi-people"></i>
+        </span>
+        <span>View New Leads</span>
+      </a>
+
+      <a href="{% url 'dashboard:matching_engine' %}" class="quick-action-btn action-nakshatra">
+        <span class="action-icon">
+          <i class="bi bi-star"></i>
+        </span>
+        <span>Configure Nakshatras</span>
+      </a>
+
+      <a href="{% url 'dashboard:enquiry_list' %}" class="quick-action-btn action-visit">
+        <span class="action-icon">
+          <i class="bi bi-calendar"></i>
+        </span>
+        <span>Schedule Site Visit</span>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

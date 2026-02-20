@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}Lead Management - Vastu Farms{% endblock %}
+
+{% block content %}
+<!-- Stats Cards -->
+<div class="lead-stats-grid">
+  <div class="lead-stat-card">
+    <span class="lead-stat-label">New Leads</span>
+    <span class="lead-stat-value stat-new">2</span>
+  </div>
+  <div class="lead-stat-card">
+    <span class="lead-stat-label">Followed Up</span>
+    <span class="lead-stat-value stat-followed">2</span>
+  </div>
+  <div class="lead-stat-card">
+    <span class="lead-stat-label">Site Visits</span>
+    <span class="lead-stat-value stat-visit">1</span>
+  </div>
+</div>
+
+<!-- Lead Table -->
+<div class="dashboard-card p-0">
+  <div class="table-responsive">
+    <table class="table table-lead">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Location</th>
+          <th>Interested Plot</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="lead-row" data-bs-toggle="offcanvas" data-bs-target="#leadDetailSheet"
+            data-name="Rajesh Kumar"
+            data-date="Dec 22, 2024"
+            data-phone="+91 98765 43210"
+            data-email="rajesh.kumar@email.com"
+            data-location="Mumbai, Maharashtra"
+            data-plot="Sunrise Meadows - A1"
+            data-status="new"
+            data-message="I am looking for a plot facing East with good Vastu. My birth star is Ashwini and I want to build a farmhouse. Please share more details about the plot and the payment options.">
+          <td>Dec 22, 2024</td>
+          <td><span class="lead-name">Rajesh Kumar</span></td>
+          <td>+91 98765 43210</td>
+          <td>Mumbai, Maharashtra</td>
+          <td><a href="#" class="plot-link">Sunrise Meadows - A1 <i class="bi bi-box-arrow-up-right"></i></a></td>
+          <td><span class="lead-status-badge status-new">New</span></td>
+        </tr>
+        <tr class="lead-row" data-bs-toggle="offcanvas" data-bs-target="#leadDetailSheet"
+            data-name="Priya Sharma"
+            data-date="Dec 21, 2024"
+            data-phone="+91 87654 32109"
+            data-email="priya.sharma@email.com"
+            data-location="Pune, Maharashtra"
+            data-plot="Green Valley - B3"
+            data-status="followed"
+            data-message="Interested in plots with North-East facing. Looking for investment purpose. Please call me to discuss further.">
+          <td>Dec 21, 2024</td>
+          <td><span class="lead-name">Priya Sharma</span></td>
+          <td>+91 87654 32109</td>
+          <td>Pune, Maharashtra</td>
+          <td><a href="#" class="plot-link">Green Valley - B3 <i class="bi bi-box-arrow-up-right"></i></a></td>
+          <td><span class="lead-status-badge status-followed">Followed Up</span></td>
+        </tr>
+        <tr class="lead-row" data-bs-toggle="offcanvas" data-bs-target="#leadDetailSheet"
+            data-name="Amit Patel"
+            data-date="Dec 20, 2024"
+            data-phone="+91 76543 21098"
+            data-email="amit.patel@email.com"
+            data-location="Ahmedabad, Gujarat"
+            data-plot="Lotus Gardens - C7"
+            data-status="visit"
+            data-message="Want to schedule a site visit this weekend. Interested in corner plots with good Vastu compliance.">
+          <td>Dec 20, 2024</td>
+          <td><span class="lead-name">Amit Patel</span></td>
+          <td>+91 76543 21098</td>
+          <td>Ahmedabad, Gujarat</td>
+          <td><a href="#" class="plot-link">Lotus Gardens - C7 <i class="bi bi-box-arrow-up-right"></i></a></td>
+          <td><span class="lead-status-badge status-visit">Site Visit</span></td>
+        </tr>
+        <tr class="lead-row" data-bs-toggle="offcanvas" data-bs-target="#leadDetailSheet"
+            data-name="Sunita Reddy"
+            data-date="Dec 19, 2024"
+            data-phone="+91 65432 10987"
+            data-email="sunita.reddy@email.com"
+            data-location="Hyderabad, Telangana"
+            data-plot="Harmony Hills - D2"
+            data-status="new"
+            data-message="Looking for a peaceful farmland for weekend getaways. Budget is around 40-50 lakhs.">
+          <td>Dec 19, 2024</td>
+          <td><span class="lead-name">Sunita Reddy</span></td>
+          <td>+91 65432 10987</td>
+          <td>Hyderabad, Telangana</td>
+          <td><a href="#" class="plot-link">Harmony Hills - D2 <i class="bi bi-box-arrow-up-right"></i></a></td>
+          <td><span class="lead-status-badge status-new">New</span></td>
+        </tr>
+        <tr class="lead-row" data-bs-toggle="offcanvas" data-bs-target="#leadDetailSheet"
+            data-name="Vikram Singh"
+            data-date="Dec 18, 2024"
+            data-phone="+91 54321 09876"
+            data-email="vikram.singh@email.com"
+            data-location="Jaipur, Rajasthan"
+            data-plot="Serene Acres - E5"
+            data-status="followed"
+            data-message="Referred by a friend. Interested in premium plots with all amenities. Please share the brochure.">
+          <td>Dec 18, 2024</td>
+          <td><span class="lead-name">Vikram Singh</span></td>
+          <td>+91 54321 09876</td>
+          <td>Jaipur, Rajasthan</td>
+          <td><a href="#" class="plot-link">Serene Acres - E5 <i class="bi bi-box-arrow-up-right"></i></a></td>
+          <td><span class="lead-status-badge status-followed">Followed Up</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Lead Detail Offcanvas Sheet -->
+<div class="offcanvas offcanvas-end lead-detail-sheet" tabindex="-1" id="leadDetailSheet" aria-labelledby="leadDetailSheetLabel">
+  <div class="offcanvas-header">
+    <div class="lead-sheet-header">
+      <h5 class="offcanvas-title" id="leadDetailSheetLabel">Rajesh Kumar</h5>
+      <span class="lead-received-date">Lead received on Dec 22, 2024</span>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <!-- Status Section -->
+    <div class="lead-sheet-section">
+      <div class="lead-status-row">
+        <span class="lead-sheet-label">Status</span>
+        <select class="lead-status-select" id="leadStatusSelect">
+          <option value="new">New</option>
+          <option value="followed">Followed Up</option>
+          <option value="visit">Site Visit</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Contact Info Card -->
+    <div class="lead-contact-card">
+      <div class="lead-contact-item">
+        <i class="bi bi-telephone"></i>
+        <div class="lead-contact-info">
+          <span class="lead-contact-label">Phone</span>
+          <span class="lead-contact-value" id="sheetPhone">+91 98765 43210</span>
+        </div>
+      </div>
+      <div class="lead-contact-item">
+        <i class="bi bi-envelope"></i>
+        <div class="lead-contact-info">
+          <span class="lead-contact-label">Email</span>
+          <span class="lead-contact-value" id="sheetEmail">rajesh.kumar@email.com</span>
+        </div>
+      </div>
+      <div class="lead-contact-item">
+        <i class="bi bi-geo-alt"></i>
+        <div class="lead-contact-info">
+          <span class="lead-contact-label">Location</span>
+          <span class="lead-contact-value" id="sheetLocation">Mumbai, Maharashtra</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interested Plot Card -->
+    <div class="lead-plot-card">
+      <div class="lead-plot-item">
+        <i class="bi bi-geo-alt-fill"></i>
+        <div class="lead-plot-info">
+          <span class="lead-plot-label">Interested Plot</span>
+          <a href="#" class="lead-plot-value" id="sheetPlot">Sunrise Meadows - A1 <i class="bi bi-box-arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message Section -->
+    <div class="lead-message-section">
+      <span class="lead-sheet-label">Message from Lead</span>
+      <div class="lead-message-box" id="sheetMessage">
+        I am looking for a plot facing East with good Vastu. My birth star is Ashwini and I want to build a farmhouse. Please share more details about the plot and the payment options.
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="lead-action-buttons">
+      <a href="#" class="btn-whatsapp" id="btnWhatsapp">
+        <i class="bi bi-whatsapp"></i> Direct WhatsApp
+      </a>
+      <a href="#" class="btn-call" id="btnCall">
+        <i class="bi bi-telephone"></i> Call Now
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Lead row click handler using event delegation
+  document.addEventListener('click', function(e) {
+    // Find the closest .lead-row ancestor
+    const row = e.target.closest('.lead-row');
+    if (!row) return;
+    
+    // Prevent opening sheet when clicking on plot link
+    if (e.target.closest('.plot-link')) {
+      return;
+    }
+    
+    const { name, date, phone, email, location, plot, status, message } = row.dataset;
+    
+    // Update sheet content
+    document.getElementById('leadDetailSheetLabel').textContent = name;
+    document.querySelector('.lead-received-date').textContent = 'Lead received on ' + date;
+    document.getElementById('sheetPhone').textContent = phone;
+    document.getElementById('sheetEmail').textContent = email;
+    document.getElementById('sheetLocation').textContent = location;
+    document.getElementById('sheetPlot').innerHTML = plot + ' <i class="bi bi-box-arrow-up-right"></i>';
+    document.getElementById('sheetMessage').textContent = message;
+    document.getElementById('leadStatusSelect').value = status;
+    
+    // Update action buttons
+    const phoneClean = phone.replace(/\s/g, '');
+    const whatsappUrl = `https://wa.me/${phoneClean.replace('+', '')}?text=Hi%2C%20I%27m%20reaching%20you%20about%20your%20recent%20enquiry%20for%20the%20plot%3A%20${encodeURIComponent(plot)}`;
+
+    const btnWhatsapp = document.getElementById('btnWhatsapp');
+    btnWhatsapp.href = whatsappUrl;
+    btnWhatsapp.target = '_blank';
+    btnWhatsapp.rel = 'noopener noreferrer';
+
+    document.getElementById('btnCall').href = 'tel:' + phoneClean;
+  });
+</script>
+{% endblock %}

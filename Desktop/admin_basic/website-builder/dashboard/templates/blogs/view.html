@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ blog.title|default:"Blog Post" }} - Vastu Farms{% endblock %}
+
+{% block content %}
+<!-- Back Button -->
+<div class="blog-view-nav">
+  <a href="{% url 'dashboard:blog_list' %}" class="btn-back">
+    <span>Back</span>
+  </a>
+</div>
+
+<!-- Blog Detail Container -->
+<div class="blog-detail">
+  <!-- Blog Header -->
+  <div class="blog-detail-header">
+    <h2 class="blog-detail-title">{{ blog.title }}</h2>
+    <div class="blog-detail-author">
+      <i class="bi bi-person"></i>
+      <span>{{ blog.author }}</span>
+    </div>
+  </div>
+
+  <!-- Blog Image -->
+  <div class="blog-detail-image">
+    <img src="{{ blog.image }}" alt="{{ blog.title }}">
+  </div>
+
+  <!-- Description Section -->
+  <div class="blog-detail-content">
+    <div class="blog-detail-meta">
+      <span class="blog-meta-label">Description</span>
+      <div class="blog-meta-datetime">
+        <span class="blog-meta-time">
+          <i class="bi bi-clock"></i>
+          {{ blog.time|default:"11:30 AM" }}
+        </span>
+        <span class="blog-meta-date">
+          <i class="bi bi-calendar3"></i>
+          {{ blog.date }}
+        </span>
+      </div>
+    </div>
+    <p class="blog-detail-description">{{ blog.description }}</p>
+  </div>
+
+  <!-- Next Blog Button -->
+  <div class="blog-detail-actions">
+    <a href="#" class="btn-next-blog">View Next Blog</a>
+  </div>
+</div>
+{% endblock %}

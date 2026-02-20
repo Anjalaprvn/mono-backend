@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block title %}Nakshatra Matching Engine - Vastu Farms{% endblock %}
+
+{% block content %}
+<div class="match-engine-layout">
+  <!-- Left Panel - Nakshatra List -->
+  <div class="nakshatra-list-panel">
+    <div class="nakshatra-search">
+      <i class="bi bi-search"></i>
+      <input type="text" id="nakshatraSearch" placeholder="Search nakshatras..." class="nakshatra-search-input">
+    </div>
+    <div class="nakshatra-list" id="nakshatraList">
+      {% for nakshatra in nakshatras %}
+      <div class="nakshatra-item {% if forloop.first %}active{% endif %}" 
+           data-id="{{ nakshatra.id }}"
+           data-name="{{ nakshatra.name }}"
+           data-ruler="{{ nakshatra.ruler }}"
+           data-directions="{{ nakshatra.directions }}"
+           data-shapes="{{ nakshatra.shapes }}">
+        <i class="bi bi-star nakshatra-icon"></i>
+        <div class="nakshatra-info">
+          <span class="nakshatra-name">{{ nakshatra.name }}</span>
+          <span class="nakshatra-ruler">{{ nakshatra.ruler }}</span>
+        </div>
+        <span class="nakshatra-symbol">{{ nakshatra.symbol }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Right Panel - Configuration Area -->
+  <div class="nakshatra-config-panel">
+    <div class="config-header">
+      <div class="config-header-left">
+        <div class="config-nakshatra-icon" id="selectedNakshatraIcon">🐴</div>
+        <div class="config-title-section">
+          <h2 class="config-title" id="selectedNakshatraName">Ashwini</h2>
+          <span class="config-subtitle">Configure matching rules</span>
+        </div>
+      </div>
+      <button class="btn-save-changes">
+        <i class="bi bi-save"></i> Save Changes
+      </button>
+    </div>
+
+    <!-- Deity / Ruling God Section -->
+    <div class="deity-section">
+      <label class="deity-label">Deity / Ruling God</label>
+      <input type="text" class="deity-input" id="selectedNakshatraRuler" value="Ashwini Kumaras">
+    </div>
+
+    <!-- Auspicious Directions Section -->
+    <div class="auspicious-directions-section">
+      <h3 class="section-title">Auspicious Directions</h3>
+      <p class="section-hint">Click to select multiple directions</p>
+      
+      <div class="compass-container">
+        <div class="compass-circle">
+          <!-- Compass Lines (SVG) -->
+          <svg class="compass-lines" viewBox="0 0 300 300">
+            <line class="compass-line line-n" x1="150" y1="150" x2="150" y2="40" data-dir="N"/>
+            <line class="compass-line line-ne" x1="150" y1="150" x2="228" y2="72" data-dir="NE"/>
+            <line class="compass-line line-e" x1="150" y1="150" x2="260" y2="150" data-dir="E"/>
+            <line class="compass-line line-se" x1="150" y1="150" x2="228" y2="228" data-dir="SE"/>
+            <line class="compass-line line-s" x1="150" y1="150" x2="150" y2="260" data-dir="S"/>
+            <line class="compass-line line-sw" x1="150" y1="150" x2="72" y2="228" data-dir="SW"/>
+            <line class="compass-line line-w" x1="150" y1="150" x2="40" y2="150" data-dir="W"/>
+            <line class="compass-line line-nw" x1="150" y1="150" x2="72" y2="72" data-dir="NW"/>
+          </svg>
+          
+          <!-- Center Point -->
+          <div class="compass-center-point"></div>
+          
+          <!-- Direction Buttons -->
+          <div class="compass-direction dir-n" data-dir="N"><span>N</span></div>
+          <div class="compass-direction dir-ne" data-dir="NE"><span>NE</span></div>
+          <div class="compass-direction dir-e" data-dir="E"><span>E</span></div>
+          <div class="compass-direction dir-se" data-dir="SE"><span>SE</span></div>
+          <div class="compass-direction dir-s active" data-dir="S"><span>S</span></div>
+          <div class="compass-direction dir-sw active" data-dir="SW"><span>SW</span></div>
+          <div class="compass-direction dir-w" data-dir="W"><span>W</span></div>
+          <div class="compass-direction dir-nw" data-dir="NW"><span>NW</span></div>
+        </div>
+      </div>
+      
+      <!-- Selected Directions Badges -->
+      <div class="selected-directions" id="selectedDirections">
+        <span class="direction-badge">S</span>
+        <span class="direction-badge">SW</span>
+      </div>
+    </div>
+
+    <!-- Recommended Plot Shapes -->
+    <div class="plot-shapes-section">
+      <h3 class="section-label">Recommended Plot Shapes</h3>
+      <div class="plot-shapes-grid">
+        <div class="plot-shape-card active" data-shape="square">
+          <div class="shape-icon">
+            <i class="bi bi-square"></i>
+          </div>
+          <span class="shape-name">Square</span>
+        </div>
+        <div class="plot-shape-card" data-shape="rectangle">
+          <div class="shape-icon">
+            <i class="bi bi-app"></i>
+          </div>
+          <span class="shape-name">Rectangle</span>
+        </div>
+        <div class="plot-shape-card" data-shape="triangle">
+          <div class="shape-icon">
+            <i class="bi bi-triangle"></i>
+          </div>
+          <span class="shape-name">Triangle</span>
+        </div>
+        <div class="plot-shape-card" data-shape="pentagon">
+          <div class="shape-icon">
+            <i class="bi bi-pentagon"></i>
+          </div>
+          <span class="shape-name">Pentagon</span>
+        </div>
+        <div class="plot-shape-card" data-shape="hexagon">
+          <div class="shape-icon">
+            <i class="bi bi-hexagon"></i>
+          </div>
+          <span class="shape-name">Hexagon</span>
+        </div>
+        <div class="plot-shape-card" data-shape="irregular">
+          <div class="shape-icon">
+            <i class="bi bi-bounding-box"></i>
+          </div>
+          <span class="shape-name">Irregular</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Function to update selected directions badges
+  function updateSelectedDirectionsBadges() {
+    const container = document.getElementById('selectedDirections');
+    container.innerHTML = '';
+    document.querySelectorAll('.compass-direction.active').forEach(function(dir) {
+      const badge = document.createElement('span');
+      badge.className = 'direction-badge';
+      badge.textContent = dir.dataset.dir;
+      container.appendChild(badge);
+    });
+    
+    // Update compass lines
+    document.querySelectorAll('.compass-line').forEach(function(line) {
+      const dir = line.dataset.dir;
+      const dirBtn = document.querySelector('.compass-direction[data-dir="' + dir + '"]');
+      if (dirBtn && dirBtn.classList.contains('active')) {
+        line.classList.add('active');
+      } else {
+        line.classList.remove('active');
+      }
+    });
+  }
+
+  // Nakshatra selection handler
+  document.querySelectorAll('.nakshatra-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      // Remove active from all items
+      document.querySelectorAll('.nakshatra-item').forEach(function(i) {
+        i.classList.remove('active');
+      });
+      // Add active to clicked item
+      this.classList.add('active');
+      
+      // Update config panel
+      const name = this.dataset.name;
+      const ruler = this.dataset.ruler;
+      const symbol = this.querySelector('.nakshatra-symbol').textContent;
+      const directions = this.dataset.directions ? this.dataset.directions.split(',') : [];
+      const shapes = this.dataset.shapes ? this.dataset.shapes.split(',') : [];
+      
+      document.getElementById('selectedNakshatraName').textContent = name;
+      document.getElementById('selectedNakshatraRuler').value = ruler;
+      document.getElementById('selectedNakshatraIcon').textContent = symbol;
+      
+      // Update compass directions
+      document.querySelectorAll('.compass-direction').forEach(function(dir) {
+        dir.classList.remove('active');
+        if (directions.includes(dir.dataset.dir)) {
+          dir.classList.add('active');
+        }
+      });
+      
+      // Update selected directions badges
+      updateSelectedDirectionsBadges();
+      
+      // Update plot shapes
+      document.querySelectorAll('.plot-shape-card').forEach(function(shape) {
+        shape.classList.remove('active');
+        if (shapes.includes(shape.dataset.shape)) {
+          shape.classList.add('active');
+        }
+      });
+    });
+  });
+
+  // Compass direction toggle
+  document.querySelectorAll('.compass-direction').forEach(function(dir) {
+    dir.addEventListener('click', function() {
+      this.classList.toggle('active');
+      updateSelectedDirectionsBadges();
+    });
+  });
+
+  // Plot shape toggle
+  document.querySelectorAll('.plot-shape-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      this.classList.toggle('active');
+    });
+  });
+
+  // Search functionality
+  document.getElementById('nakshatraSearch').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    document.querySelectorAll('.nakshatra-item').forEach(function(item) {
+      const name = item.dataset.name.toLowerCase();
+      const ruler = item.dataset.ruler.toLowerCase();
+      if (name.includes(searchTerm) || ruler.includes(searchTerm)) {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+
+  // Initialize on page load
+  updateSelectedDirectionsBadges();
+</script>
+{% endblock %}

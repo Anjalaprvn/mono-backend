@@ -1,0 +1,601 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Plot - Vastu Farms{% endblock %}
+
+{% block content %}
+<!-- Stepper -->
+<div class="plot-stepper">
+  <div class="stepper-item active" data-step="1">
+    <div class="stepper-icon">
+      <i class="bi bi-geo-alt"></i>
+    </div>
+    <span class="stepper-label">Basic Info</span>
+  </div>
+  <div class="stepper-line"></div>
+  <div class="stepper-item" data-step="2">
+    <div class="stepper-icon">
+      <i class="bi bi-star"></i>
+    </div>
+    <span class="stepper-label">Vastu Profile</span>
+  </div>
+  <div class="stepper-line"></div>
+  <div class="stepper-item" data-step="3">
+    <div class="stepper-icon">
+      <i class="bi bi-image"></i>
+    </div>
+    <span class="stepper-label">Media</span>
+  </div>
+</div>
+
+<!-- Form Container -->
+<div class="plot-form-container">
+  <form id="plotForm">
+    <input type="hidden" id="plotId" name="plot_id" value="{{ plot.id }}">
+    
+    <!-- Step 1: Basic Info -->
+    <div class="plot-step" id="step1">
+      <div class="step-header">
+        <h2 class="step-title">Basic Information</h2>
+        <p class="step-subtitle">Update the fundamental details of the plot</p>
+      </div>
+
+      <div class="step-content">
+        <div class="form-row mb-3">
+          <div class="form-group">
+            <label class="form-label">Plot Name <span class="required">*</span></label>
+            <input type="text" class="form-control" id="plotName" name="plot_name" value="{{ plot.name }}" placeholder="e.g., Sunrise Meadows - Plot A1" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Location <span class="required">*</span></label>
+            <input type="text" class="form-control" id="plotLocation" name="location" value="{{ plot.location }}" placeholder="e.g., Near Shadnagar, Telangana" required>
+          </div>
+        </div>
+
+        <div class="form-row mb-3">
+          <div class="form-group">
+            <label class="form-label">Plot Size <span class="required">*</span></label>
+            <input type="text" class="form-control" id="plotSize" name="plot_size" value="{{ plot.size }}" placeholder="e.g., 2,400 sq.ft" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Price <span class="required">*</span></label>
+            <input type="text" class="form-control" id="plotPrice" name="price" value="{{ plot.price }}" placeholder="e.g., ₹32.4L" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Description</label>
+            <textarea class="form-control form-textarea" id="plotDescription" name="description" rows="5" placeholder="Describe the plot, its surroundings, amenities, etc.">{{ plot.description }}</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <a href="{% url 'dashboard:plots_list' %}" class="btn-step-cancel">Cancel</a>
+        <button type="button" class="btn-step-continue" onclick="nextStep(2)">
+          Continue <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Vastu Profile -->
+    <div class="plot-step" id="step2" style="display: none;">
+      <div class="step-header">
+        <h2 class="step-title">Vastu Profile</h2>
+        <p class="step-subtitle">Configure the Vastu compatibility settings</p>
+      </div>
+
+      <div class="step-content">
+        <!-- Plot Facing Direction -->
+        <div class="vastu-section">
+          <label class="form-label">Plot Facing Direction <span class="required">*</span></label>
+          <p class="section-hint">Select the primary facing direction(s)</p>
+          
+          <div class="compass-container-sm">
+            <div class="compass-circle-sm">
+              <!-- SVG Lines -->
+              <svg class="compass-lines-sm" viewBox="0 0 280 280">
+                <line class="compass-line-sm" x1="140" y1="40" x2="140" y2="240"/>
+                <line class="compass-line-sm" x1="40" y1="140" x2="240" y2="140"/>
+                <line class="compass-line-sm" x1="70" y1="70" x2="210" y2="210"/>
+                <line class="compass-line-sm" x1="210" y1="70" x2="70" y2="210"/>
+              </svg>
+              <div class="compass-center-sm"></div>
+              <button type="button" class="compass-dir{% if plot.facing == 'N' %} active{% endif %}" data-dir="N">N</button>
+              <button type="button" class="compass-dir{% if plot.facing == 'NE' or plot.facing == 'North-East' %} active{% endif %}" data-dir="NE">NE</button>
+              <button type="button" class="compass-dir{% if plot.facing == 'E' or plot.facing == 'East' %} active{% endif %}" data-dir="E">E</button>
+              <button type="button" class="compass-dir{% if plot.facing == 'SE' or plot.facing == 'South-East' %} active{% endif %}" data-dir="SE">SE</button>
+              <button type="button" class="compass-dir{% if plot.facing == 'S' or plot.facing == 'South' %} active{% endif %}" data-dir="S">S</button>
+              <button type="button" class="compass-dir{% if plot.facing == 'SW' or plot.facing == 'South-West' %} active{% endif %}" data-dir="SW">SW</button>
+              <button type="button" class="compass-dir{% if plot.facing == 'W' or plot.facing == 'West' %} active{% endif %}" data-dir="W">W</button>
+              <button type="button" class="compass-dir{% if plot.facing == 'NW' or plot.facing == 'North-West' %} active{% endif %}" data-dir="NW">NW</button>
+            </div>
+          </div>
+          <input type="hidden" id="facingDirection" name="facing_direction" value="{{ plot.facing }}">
+        </div>
+
+        <!-- Compatible Nakshatras -->
+        <div class="vastu-section">
+          <label class="form-label">Compatible Nakshatras</label>
+          <p class="section-hint">Select stars that are compatible with this plot</p>
+          
+          <div class="nakshatra-chips" id="nakshatraChips">
+            <button type="button" class="nakshatra-chip" data-nakshatra="Ashwini">Ashwini</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Bharani">Bharani</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Krittika">Krittika</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Rohini">Rohini</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Mrigashira">Mrigashira</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Ardra">Ardra</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Punarvasu">Punarvasu</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Pushya">Pushya</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Ashlesha">Ashlesha</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Magha">Magha</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Purva Phalguni">Purva Phalguni</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Uttara Phalguni">Uttara Phalguni</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Hasta">Hasta</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Chitra">Chitra</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Swati">Swati</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Vishakha">Vishakha</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Anuradha">Anuradha</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Jyeshtha">Jyeshtha</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Mula">Mula</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Purva Ashadha">Purva Ashadha</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Uttara Ashadha">Uttara Ashadha</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Shravana">Shravana</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Dhanishta">Dhanishta</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Shatabhisha">Shatabhisha</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Purva Bhadrapada">Purva Bhadrapada</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Uttara Bhadrapada">Uttara Bhadrapada</button>
+            <button type="button" class="nakshatra-chip" data-nakshatra="Revati">Revati</button>
+          </div>
+          <p class="selected-count"><span id="nakshatraCount">0</span> star(s) selected</p>
+        </div>
+
+        <!-- Compatibility Reasons -->
+        <div class="vastu-section">
+          <label class="form-label">Compatibility Reasons</label>
+          <p class="section-hint">Add a reason why each nakshatra is compatible with this plot</p>
+          
+          <div id="reasonsContainer">
+            {% for reason in plot.reasons %}
+            <div class="reason-input-group">
+              <input type="text" class="form-control" name="reasons[]" value="{{ reason }}" placeholder="Add reason...">
+              <button type="button" class="input-remove-btn" onclick="removeReasonItem(this)">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="add-item-row">
+            <span class="limit-message" id="reasonLimitMsg" style="display: none;">Maximum limit reached (7)</span>
+            <button type="button" class="btn-add-item" id="addReasonBtn" onclick="addReason()">Add Reason</button>
+          </div>
+        </div>
+
+        <!-- Plot Highlights -->
+        <div class="vastu-section">
+          <label class="form-label">Plot Highlights</label>
+          <p class="section-hint">Add a reason why plot highlights</p>
+          
+          <div id="highlightsContainer">
+            {% for highlight in plot.highlights %}
+            <div class="highlight-input-row">
+              <input type="text" class="form-control" name="highlights[]" value="{{ highlight }}" placeholder="Enter highlight...">
+              <button type="button" class="input-remove-btn" onclick="removeHighlightItem(this)">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+            {% empty %}
+            <div class="highlight-input-row">
+              <input type="text" class="form-control" name="highlights[]" placeholder="Enter highlight...">
+            </div>
+            {% endfor %}
+          </div>
+          <div class="add-item-row">
+            <span class="limit-message" id="highlightLimitMsg" style="display: none;">Maximum limit reached (7)</span>
+            <button type="button" class="btn-add-item" id="addHighlightBtn" onclick="addHighlight()">Add Highlight</button>
+          </div>
+        </div>
+
+        <!-- Nearby Places -->
+        <div class="vastu-section">
+          <label class="form-label">Nearby Places</label>
+          <p class="section-hint">Add nearby Attractions or destinations</p>
+          
+          <div id="nearbyContainer">
+            {% for place in plot.nearby_places %}
+            <div class="nearby-input-row">
+              <input type="text" class="form-control" name="nearby_destination[]" value="{{ place.destination }}" placeholder="Enter Destination">
+              <input type="text" class="form-control nearby-distance" name="nearby_distance[]" value="{{ place.distance }}" placeholder="Within Kilometers / eg. 2km">
+              <button type="button" class="input-remove-btn" onclick="removeNearbyItem(this)">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+            {% empty %}
+            <div class="nearby-input-row">
+              <input type="text" class="form-control" name="nearby_destination[]" placeholder="Enter Destination">
+              <input type="text" class="form-control nearby-distance" name="nearby_distance[]" placeholder="Within Kilometers / eg. 2km">
+            </div>
+            {% endfor %}
+          </div>
+          <div class="add-item-row">
+            <span class="limit-message" id="nearbyLimitMsg" style="display: none;">Maximum limit reached (7)</span>
+            <button type="button" class="btn-add-item" id="addNearbyBtn" onclick="addNearbyPlace()">Destination</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-actions" style="margin-top: 5rem;">
+        <button type="button" class="btn-step-back" onclick="prevStep(1)">
+          <i class="bi bi-chevron-left"></i> Back
+        </button>
+        <button type="button" class="btn-step-continue" onclick="nextStep(3)">
+          Continue <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 3: Media -->
+    <div class="plot-step" id="step3" style="display: none;">
+      <div class="step-header">
+        <h2 class="step-title">Media Upload</h2>
+        <p class="step-subtitle">Update photos for the plot</p>
+      </div>
+
+      <div class="step-content">
+        <div class="vastu-section">
+          <div class="media-section-header">
+            <div class="media-label">
+              <i class="bi bi-image"></i>
+              <div>
+                <span class="form-label">Media</span>
+                <p class="section-hint mb-0">Shots of the Property</p>
+              </div>
+            </div>
+            <span class="file-count"><span id="fileCount">{{ plot_media_count }}</span> file(s)</span>
+          </div>
+          
+          <div class="media-upload-area" id="mediaUploadArea">
+            {% for media in plot.media %}
+            <div class="media-preview-item-lg" data-mediaid="{{ media.id }}">
+              <img src="{{ media.url }}" alt="{{ media.name }}">
+              <button type="button" class="media-remove-btn" onclick="removeExistingMedia(this, '{{ media.id }}')">
+                <i class="bi bi-trash3"></i>
+              </button>
+              <span class="media-filename">{{ media.name }}</span>
+            </div>
+            {% endfor %}
+            <label class="media-upload-box-lg" id="uploadBoxLg" for="plotMediaInput">
+              <div class="upload-icon">
+                <i class="bi bi-cloud-arrow-up"></i>
+              </div>
+              <div class="upload-text">
+                <span class="upload-title">Upload Media</span>
+                <span class="upload-hint">Size up to 10MB</span>
+              </div>
+              <input type="file" id="plotMediaInput" name="media" multiple accept="image/*" hidden>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-actions">
+        <button type="button" class="btn-step-back" onclick="prevStep(2)">
+          <i class="bi bi-chevron-left"></i> Back
+        </button>
+        <button type="submit" class="btn-step-continue">
+          Save Changes <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  let currentStep = 1;
+  let selectedNakshatras = [];
+  let uploadedFiles = [];
+  let existingMediaCount = {{ plot_media_count }};
+  const MAX_FILES = 7;
+
+  // Initialize pre-selected nakshatras from server data
+  const preSelectedNakshatras = {{ plot_nakshatras_json|safe }};
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    // Pre-select nakshatras
+    preSelectedNakshatras.forEach(nakshatra => {
+      const chip = document.querySelector(`.nakshatra-chip[data-nakshatra="${nakshatra}"]`);
+      if (chip) {
+        chip.classList.add('active');
+        selectedNakshatras.push(nakshatra);
+      }
+    });
+    document.getElementById('nakshatraCount').textContent = selectedNakshatras.length;
+    if (selectedNakshatras.length > 0) {
+      document.getElementById('addReasonBtn').style.display = 'block';
+    }
+    
+    // Update limits on load
+    updateReasonLimit();
+    updateHighlightLimit();
+    updateNearbyLimit();
+    toggleUploadBox();
+  });
+
+  // Step Navigation
+  function nextStep(step) {
+    if (step === 2 && !validateStep1()) return;
+    
+    document.getElementById(`step${currentStep}`).style.display = 'none';
+    document.getElementById(`step${step}`).style.display = 'block';
+    
+    updateStepper(step);
+    currentStep = step;
+  }
+
+  function prevStep(step) {
+    document.getElementById(`step${currentStep}`).style.display = 'none';
+    document.getElementById(`step${step}`).style.display = 'block';
+    
+    updateStepper(step);
+    currentStep = step;
+  }
+
+  function updateStepper(step) {
+    document.querySelectorAll('.stepper-item').forEach((item, index) => {
+      const itemStep = index + 1;
+      item.classList.remove('active', 'completed');
+      if (itemStep < step) {
+        item.classList.add('completed');
+      } else if (itemStep === step) {
+        item.classList.add('active');
+      }
+    });
+    
+    document.querySelectorAll('.stepper-line').forEach((line, index) => {
+      line.classList.toggle('completed', index < step - 1);
+    });
+  }
+
+  function validateStep1() {
+    const required = ['plotName', 'plotLocation', 'plotSize', 'plotPrice'];
+    let valid = true;
+    required.forEach(id => {
+      const input = document.getElementById(id);
+      if (!input.value.trim()) {
+        input.classList.add('is-invalid');
+        valid = false;
+      } else {
+        input.classList.remove('is-invalid');
+      }
+    });
+    return valid;
+  }
+
+  // Compass Direction Selection
+  document.querySelectorAll('.compass-dir').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.compass-dir').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('facingDirection').value = this.dataset.dir;
+    });
+  });
+
+  // Nakshatra Chip Selection
+  document.querySelectorAll('.nakshatra-chip').forEach(chip => {
+    chip.addEventListener('click', function() {
+      this.classList.toggle('active');
+      const nakshatra = this.dataset.nakshatra;
+      
+      if (this.classList.contains('active')) {
+        if (!selectedNakshatras.includes(nakshatra)) {
+          selectedNakshatras.push(nakshatra);
+        }
+      } else {
+        selectedNakshatras = selectedNakshatras.filter(n => n !== nakshatra);
+      }
+      
+      document.getElementById('nakshatraCount').textContent = selectedNakshatras.length;
+      document.getElementById('addReasonBtn').style.display = selectedNakshatras.length > 0 ? 'block' : 'none';
+    });
+  });
+
+  // Reason functions
+  function addReason() {
+    const container = document.getElementById('reasonsContainer');
+    const existingCount = container.querySelectorAll('.reason-input-group').length;
+    if (existingCount >= 7) return;
+    
+    const div = document.createElement('div');
+    div.className = 'reason-input-group';
+    div.innerHTML = `
+      <input type="text" class="form-control" name="reasons[]" placeholder="Add reason...">
+      <button type="button" class="input-remove-btn" onclick="removeReasonItem(this)">
+        <i class="bi bi-x"></i>
+      </button>
+    `;
+    container.appendChild(div);
+    updateReasonLimit();
+  }
+
+  function removeReasonItem(btn) {
+    btn.parentElement.remove();
+    updateReasonLimit();
+  }
+
+  function updateReasonLimit() {
+    const container = document.getElementById('reasonsContainer');
+    const count = container.querySelectorAll('.reason-input-group').length;
+    const btn = document.getElementById('addReasonBtn');
+    const msg = document.getElementById('reasonLimitMsg');
+    
+    if (count >= 7) {
+      btn.disabled = true;
+      btn.classList.add('disabled');
+      msg.style.display = 'inline';
+    } else {
+      btn.disabled = false;
+      btn.classList.remove('disabled');
+      msg.style.display = 'none';
+    }
+  }
+
+  // Highlights
+  function addHighlight() {
+    const container = document.getElementById('highlightsContainer');
+    const existingCount = container.querySelectorAll('.highlight-input-row').length;
+    if (existingCount >= 7) return;
+    
+    const div = document.createElement('div');
+    div.className = 'highlight-input-row';
+    div.innerHTML = `
+      <input type="text" class="form-control" name="highlights[]" placeholder="Enter highlight...">
+      <button type="button" class="input-remove-btn" onclick="removeHighlightItem(this)">
+        <i class="bi bi-x"></i>
+      </button>
+    `;
+    container.appendChild(div);
+    updateHighlightLimit();
+  }
+
+  function removeHighlightItem(btn) {
+    btn.parentElement.remove();
+    updateHighlightLimit();
+  }
+
+  function updateHighlightLimit() {
+    const container = document.getElementById('highlightsContainer');
+    const count = container.querySelectorAll('.highlight-input-row').length;
+    const btn = document.getElementById('addHighlightBtn');
+    const msg = document.getElementById('highlightLimitMsg');
+    
+    if (count >= 7) {
+      btn.disabled = true;
+      btn.classList.add('disabled');
+      msg.style.display = 'inline';
+    } else {
+      btn.disabled = false;
+      btn.classList.remove('disabled');
+      msg.style.display = 'none';
+    }
+  }
+
+  // Nearby Places
+  function addNearbyPlace() {
+    const container = document.getElementById('nearbyContainer');
+    const existingCount = container.querySelectorAll('.nearby-input-row').length;
+    if (existingCount >= 7) return;
+    
+    const div = document.createElement('div');
+    div.className = 'nearby-input-row';
+    div.innerHTML = `
+      <input type="text" class="form-control" name="nearby_destination[]" placeholder="Enter Destination">
+      <input type="text" class="form-control nearby-distance" name="nearby_distance[]" placeholder="Within Kilometers / eg. 2km">
+      <button type="button" class="input-remove-btn" onclick="removeNearbyItem(this)">
+        <i class="bi bi-x"></i>
+      </button>
+    `;
+    container.appendChild(div);
+    updateNearbyLimit();
+  }
+
+  function removeNearbyItem(btn) {
+    btn.parentElement.remove();
+    updateNearbyLimit();
+  }
+
+  function updateNearbyLimit() {
+    const container = document.getElementById('nearbyContainer');
+    const count = container.querySelectorAll('.nearby-input-row').length;
+    const btn = document.getElementById('addNearbyBtn');
+    const msg = document.getElementById('nearbyLimitMsg');
+    
+    if (count >= 7) {
+      btn.disabled = true;
+      btn.classList.add('disabled');
+      msg.style.display = 'inline';
+    } else {
+      btn.disabled = false;
+      btn.classList.remove('disabled');
+      msg.style.display = 'none';
+    }
+  }
+
+  // Media Upload
+  const plotMediaInput = document.getElementById('plotMediaInput');
+  const mediaUploadArea = document.getElementById('mediaUploadArea');
+  const uploadBoxLg = document.getElementById('uploadBoxLg');
+
+  plotMediaInput.addEventListener('change', function(e) {
+    const files = Array.from(e.target.files);
+    const currentCount = getTotalMediaCount();
+    
+    files.forEach(file => {
+      if (file.type.startsWith('image/') && getTotalMediaCount() < MAX_FILES) {
+        uploadedFiles.push(file);
+        addMediaPreview(file);
+      }
+    });
+    updateFileCount();
+    toggleUploadBox();
+    plotMediaInput.value = '';
+  });
+
+  function getTotalMediaCount() {
+    return mediaUploadArea.querySelectorAll('.media-preview-item-lg').length;
+  }
+
+  function addMediaPreview(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const div = document.createElement('div');
+      div.className = 'media-preview-item-lg';
+      div.innerHTML = `
+        <img src="${e.target.result}" alt="${file.name}">
+        <button type="button" class="media-remove-btn" onclick="removeNewMedia(this)">
+          <i class="bi bi-trash3"></i>
+        </button>
+        <span class="media-filename">${file.name}</span>
+      `;
+      mediaUploadArea.insertBefore(div, uploadBoxLg);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeExistingMedia(btn, mediaId) {
+    btn.closest('.media-preview-item-lg').remove();
+    // Track deleted media IDs for server submission
+    const deletedInput = document.createElement('input');
+    deletedInput.type = 'hidden';
+    deletedInput.name = 'deleted_media[]';
+    deletedInput.value = mediaId;
+    document.getElementById('plotForm').appendChild(deletedInput);
+    
+    updateFileCount();
+    toggleUploadBox();
+  }
+
+  function removeNewMedia(btn) {
+    btn.closest('.media-preview-item-lg').remove();
+    updateFileCount();
+    toggleUploadBox();
+  }
+
+  function updateFileCount() {
+    document.getElementById('fileCount').textContent = getTotalMediaCount();
+  }
+
+  function toggleUploadBox() {
+    uploadBoxLg.style.display = getTotalMediaCount() >= MAX_FILES ? 'none' : 'flex';
+  }
+
+  // Form Submit
+  document.getElementById('plotForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log('Form submitted - updating plot');
+    // Handle form submission
+  });
+</script>
+{% endblock %}

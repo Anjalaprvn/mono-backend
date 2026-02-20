@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Property Management - Vastu Farms{% endblock %}
+
+{% block content %}
+<!-- Filter Bar Section -->
+<div class="filter-bar">
+  <div class="filter-dropdowns">
+    <i class="bi bi-funnel filter-icon"></i>
+    <select class="filter-select" name="direction">
+      <option value="">All Directions</option>
+      <option value="north">North</option>
+      <option value="south">South</option>
+      <option value="east">East</option>
+      <option value="west">West</option>
+      <option value="north-east">North-East</option>
+      <option value="north-west">North-West</option>
+      <option value="south-east">South-East</option>
+      <option value="south-west">South-West</option>
+    </select>
+    <select class="filter-select" name="status">
+      <option value="">All Status</option>
+      <option value="available">Available</option>
+      <option value="sold">Sold</option>
+      <option value="reserved">Reserved</option>
+    </select>
+  </div>
+  <a href="{% url 'dashboard:plots_add' %}" class="btn-primary text-decoration-none">
+    <i class="bi bi-plus"></i>
+    <span class="btn-text">Add New Plot</span>
+  </a>
+</div>
+
+<!-- Property Cards Grid -->
+<div class="property-grid">
+  {% for property in properties %}
+    {% include 'components/plotcard.html' with property=property %}
+  {% empty %}
+    <div class="empty-state">
+      <p>No properties found. Add your first plot to get started.</p>
+    </div>
+  {% endfor %}
+</div>
+
+<!-- Delete Plot Modal -->
+<div class="modal fade" id="deletePlotModal" tabindex="-1" aria-labelledby="deletePlotModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content delete-plot-modal">
+      <div class="modal-body">
+        <h5 class="delete-modal-title">Delete Plot</h5>
+        <p class="delete-modal-text">
+          Are you sure you want to delete <strong id="deletePlotName">Sunrise Meadows - Plot A1</strong>? This action cannot be undone and will permanently remove all associated data including media files and matching records.
+        </p>
+        <div class="delete-modal-actions mt-3">
+          <button type="button" class="btn-delete-cancel" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn-delete-confirm" id="confirmDeletePlot">Delete Plot</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Delete Modal
+  const deletePlotModal = document.getElementById('deletePlotModal');
+  let currentDeletePlotId = null;
+
+  deletePlotModal.addEventListener('show.bs.modal', function(event) {
+    const button = event.relatedTarget;
+    currentDeletePlotId = button.dataset.plotId;
+    const plotName = button.dataset.plotName;
+    document.getElementById('deletePlotName').textContent = plotName;
+  });
+
+  document.getElementById('confirmDeletePlot').addEventListener('click', function() {
+    if (currentDeletePlotId) {
+      console.log('Deleting plot:', currentDeletePlotId);
+      bootstrap.Modal.getInstance(deletePlotModal).hide();
+    }
+  });
+</script>
+{% endblock %}

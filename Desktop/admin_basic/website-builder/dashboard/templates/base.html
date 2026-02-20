@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Vastu Farms Admin Portal{% endblock %}</title>
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+/>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="layout">
+    {% include 'components/layout/sidebar.html' %}
+    <main class="main-content">
+      {% include 'components/layout/header.html' %}
+      <div class="content-area">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+  </div>
+  <!-- Message Container -->
+  <div class="message-container" id="messageContainer"></div>
+  
+  <script src="{% static 'js/index.js' %}"></script>
+  
+  <style>
+    .message-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      max-width: 400px;
+    }
+    
+    .message-alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.3s ease-out;
+      font-size: 0.875rem;
+    }
+    
+    .message-alert.success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border-left: 4px solid #10b981;
+    }
+    
+    .message-alert.error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border-left: 4px solid #ef4444;
+    }
+    
+    .message-alert.warning {
+      background-color: #fef3c7;
+      color: #92400e;
+      border-left: 4px solid #f59e0b;
+    }
+    
+    .message-alert.info {
+      background-color: #dbeafe;
+      color: #1e40af;
+      border-left: 4px solid #3b82f6;
+    }
+    
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+    
+    .message-close {
+      margin-left: auto;
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+      transition: opacity 0.15s ease;
+    }
+    
+    .message-close:hover {
+      opacity: 1;
+    }
+  </style>
+  
+  <script>
+    // Global message display and auto-hide functionality
+    function showMessage(message, type = 'info') {
+      const messageContainer = document.getElementById('messageContainer');
+      if (!messageContainer) return;
+      
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message-alert ${type}`;
+      
+      const iconMap = {
+        'success': 'bi-check-circle-fill',
+        'error': 'bi-x-circle-fill',
+        'warning': 'bi-exclamation-triangle-fill',
+        'info': 'bi-info-circle-fill'
+      };
+      
+      messageDiv.innerHTML = `
+        <i class="bi ${iconMap[type] || iconMap.info}"></i>
+        <span>${message}</span>
+        <button type="button" class="message-close" onclick="this.parentElement.remove()">
+          <i class="bi bi-x"></i>
+        </button>
+      `;
+      
+      messageContainer.appendChild(messageDiv);
+      
+      // Auto-remove after 3 seconds
+      setTimeout(function() {
+        messageDiv.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(function() {
+          if (messageDiv.parentNode) {
+            messageDiv.remove();
+          }
+        }, 300);
+      }, 3000);
+    }
+    
+    // Initialize messages on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check URL parameters for messages
+      const urlParams = new URLSearchParams(window.location.search);
+      const message = urlParams.get('message');
+      const messageType = urlParams.get('type') || 'info';
+      
+      if (message) {
+        showMessage(message, messageType);
+        // Clean URL
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
+      
+      // Check for Django messages (if using Django messages framework)
+      {% if messages %}
+        {% for message in messages %}
+          showMessage('{{ message|escapejs }}', '{{ message.tags|default:"info" }}');
+        {% endfor %}
+      {% endif %}
+      
+      // Clear any messages from session storage (for logout scenario)
+      const logoutMessage = sessionStorage.getItem('logout_message');
+      if (logoutMessage) {
+        showMessage(logoutMessage, 'info');
+        sessionStorage.removeItem('logout_message');
+      }
+    });
+  </script>
+  
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
